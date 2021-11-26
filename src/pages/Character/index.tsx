@@ -51,7 +51,6 @@ const Character: React.FC = () => {
 
   const handleEditCharacterSubmit = (event: any): void => {
     event.preventDefault();
-    console.log('EDIT');
     if (!inputName.length || !inputPath.length) return;
 
     const storagedCharacters = getStoragedCharacters();

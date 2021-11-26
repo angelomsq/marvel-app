@@ -77,6 +77,12 @@ const Dashboard: React.FC = () => {
             setPageCount(Math.ceil(storagedCharacters.length / itemsPerPage));
             setLoading(false);
           }
+        })
+        .catch(err => {
+          if (err.response)
+            setMessage(
+              'Sorry! Unable to connect to a Marvel API at the moment.',
+            );
         });
     }
     fetchCharacters();

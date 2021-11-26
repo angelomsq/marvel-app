@@ -140,9 +140,7 @@ export const Box = styled.div`
   padding: 0.5rem;
   display: flex;
   margin: 0;
-  /* flex-direction: column; */
   align-items: center;
-  /* justify-content: center; */
   transition: all 0.5s;
 
   img {
@@ -153,9 +151,6 @@ export const Box = styled.div`
     object-fit: cover;
     margin-right: 0.5rem;
     border: 6px solid var(--background);
-    /* border-right: 6px solid var(--red); */
-    /* border-left: 1px solid var(--red); */
-    /* border-bottom: 1px solid var(--red); */
     transition: all 0.5s;
   }
 
@@ -165,10 +160,6 @@ export const Box = styled.div`
     img {
       border-color: var(--black);
       transform: rotate(-10deg);
-    }
-
-    span {
-      /* color: var(--blue); */
     }
   }
 `;

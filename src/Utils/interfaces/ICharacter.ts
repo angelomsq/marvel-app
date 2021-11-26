@@ -6,11 +6,4 @@ export interface ICharacter {
     extension: string;
     path: string;
   };
-  // modified: string;
-  // resourceURI: string;
-  // urls: [];
-  // comics: [];
-  // stories: [];
-  // events: [];
-  // series: [];
 }
