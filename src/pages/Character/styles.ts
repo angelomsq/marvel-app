@@ -50,6 +50,7 @@ export const Hero = styled.div<HeroProps>`
   flex-direction: column;
 
   padding: 3rem;
+  position: relative;
 
   @media (max-width: 1080px) {
     padding: 2rem;
@@ -58,6 +59,40 @@ export const Hero = styled.div<HeroProps>`
   h1 {
     margin: 0 0 1rem 0;
     text-shadow: 1px 2px 15px var(--background);
+  }
+
+  button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border: 0;
+    background: var(--red);
+    color: #ffffff;
+
+    font-size: 1rem;
+    padding: 0.3rem 0.8rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: 720px) {
+      position: relative;
+      width: 5rem;
+      top: 0;
+      right: 0;
+      margin-bottom: 1rem;
+    }
+
+    &:hover {
+      background: var(--red-medium);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      margin-right: 0.5rem;
+    }
   }
 `;
 
@@ -116,6 +151,51 @@ export const Grid = styled.div`
           font-weight: 600;
         }
       }
+    }
+  }
+`;
+
+export const Form = styled.form`
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  span {
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 15px;
+    outline: 0;
+    border: 1px solid var(--gray);
+    background: var(--shape);
+    color: #ffffff;
+    margin-bottom: 1rem;
+  }
+
+  button[type='button'] {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    background: none;
+    border: 0;
+    color: var(--red);
+  }
+
+  button[type='submit'] {
+    background: var(--red);
+    color: var(--gray);
+    border: 0;
+    padding: 0.8rem 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1rem;
+
+    &:hover {
+      background: var(--red-medium);
     }
   }
 `;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Modal from 'react-modal';
+import { FaTimes, FaRegEdit } from 'react-icons/fa';
 import marvelApi from '../../services/marvelApi';
 
-import { Container, Hero, Grid } from './styles';
+import { Container, Hero, Grid, Form } from './styles';
 import { ICharacter } from '../../Utils/interfaces/ICharacter';
 import getStoragedCharacters from '../../Utils/getStoragedCharacters';
 
@@ -10,6 +12,8 @@ interface IList {
   name: string;
   resourceURI: string;
 }
+
+Modal.setAppElement('#root');
 
 const Character: React.FC = () => {
   const { characterId } = useParams();
@@ -29,6 +33,52 @@ const Character: React.FC = () => {
   const [stories, setStories] = useState<IList[]>([]);
   const [events, setEvents] = useState<IList[]>([]);
   const [series, setSeries] = useState<IList[]>([]);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [inputName, setInputName] = useState(character.name);
+  const [inputDescription, setInputDescription] = useState(
+    character.description,
+  );
+  const [inputPath, setInputPath] = useState(character.thumbnail.path);
+
+  const handleOpenModal = (): void => {
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = (): void => {
+    setModalIsOpen(false);
+  };
+
+  const handleEditCharacterSubmit = (event: any): void => {
+    event.preventDefault();
+    console.log('EDIT');
+    if (!inputName.length || !inputPath.length) return;
+
+    const storagedCharacters = getStoragedCharacters();
+    const editedStorageCharacters = storagedCharacters.map(
+      (item: ICharacter): ICharacter => {
+        if (item.id === Number(characterId)) {
+          const edited = {
+            id: item.id,
+            name: inputName,
+            description: inputDescription,
+            thumbnail: {
+              path: inputPath,
+              extension: '',
+            },
+          };
+          setCharacter(edited);
+          return edited;
+        }
+        return item;
+      },
+    );
+    localStorage.setItem(
+      '@MarvelChallenge:characters',
+      JSON.stringify(editedStorageCharacters),
+    );
+    handleCloseModal();
+  };
 
   useEffect(() => {
     async function fetchCharacter(): Promise<void> {
@@ -53,8 +103,20 @@ const Character: React.FC = () => {
           <Link to="/">Back to Dashboard</Link>
         </header>
         <Hero
-          img={`${character.thumbnail?.path}.${character.thumbnail?.extension}`}
+          img={
+            !character.thumbnail.extension.length
+              ? `${character.thumbnail.path}`
+              : `${character.thumbnail.path}.${character.thumbnail.extension}`
+          }
         >
+          <button
+            type="button"
+            onClick={handleOpenModal}
+            title="Edit Character"
+          >
+            <FaRegEdit />
+            <span>Edit</span>
+          </button>
           <h1>{character.name}</h1>
           <span>
             {character.description
@@ -104,11 +166,44 @@ const Character: React.FC = () => {
             </div>
           </Grid>
         </Hero>
-        {/* <img
-          src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
-          alt={character.name}
-        /> */}
       </section>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={handleCloseModal}
+        contentLabel="Example Modal"
+        overlayClassName="modal-overlay"
+        className="modal-content"
+      >
+        <Form onSubmit={handleEditCharacterSubmit}>
+          <h2>Edit Character</h2>
+          <button type="button" onClick={handleCloseModal}>
+            <FaTimes size={20} />
+          </button>
+          <span>Name</span>
+          <input
+            type="text"
+            placeholder="Name"
+            value={inputName}
+            onChange={e => setInputName(e.target.value)}
+          />
+          <span>Description</span>
+          <input
+            type="text"
+            placeholder="Description"
+            value={inputDescription}
+            onChange={e => setInputDescription(e.target.value)}
+          />
+          <span>Image</span>
+          <input
+            type="text"
+            placeholder="Image Path"
+            value={inputPath}
+            onChange={e => setInputPath(e.target.value)}
+          />
+
+          <button type="submit">Save</button>
+        </Form>
+      </Modal>
     </Container>
   );
 };

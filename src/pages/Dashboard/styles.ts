@@ -148,6 +148,9 @@ export const Box = styled.div`
   img {
     border-radius: 50%;
     display: block;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
     margin-right: 0.5rem;
     border: 6px solid var(--background);
     /* border-right: 6px solid var(--red); */

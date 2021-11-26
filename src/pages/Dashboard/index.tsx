@@ -178,7 +178,11 @@ const Dashboard: React.FC = () => {
                 <Link key={item.id} to={`character/${item.id}`}>
                   <Box>
                     <img
-                      src={`${item.thumbnail.path}/standard_medium.${item.thumbnail.extension}`}
+                      src={
+                        !item.thumbnail.extension.length
+                          ? `${item.thumbnail.path}`
+                          : `${item.thumbnail.path}/standard_medium.${item.thumbnail.extension}`
+                      }
                       alt={item.name}
                     />
                     <span>{item.name}</span>
