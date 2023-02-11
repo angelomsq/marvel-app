@@ -49,7 +49,9 @@ const Character: React.FC = () => {
     setModalIsOpen(false);
   };
 
-  const handleEditCharacterSubmit = (event: any): void => {
+  const handleEditCharacterSubmit = (
+    event: React.FormEvent<HTMLFormElement>,
+  ): void => {
     event.preventDefault();
     if (!inputName.length || !inputPath.length) return;
 
@@ -62,8 +64,14 @@ const Character: React.FC = () => {
             name: inputName,
             description: inputDescription,
             thumbnail: {
-              path: inputPath,
-              extension: '',
+              path:
+                inputPath !== item.thumbnail.path
+                  ? inputPath
+                  : item.thumbnail.path,
+              extension:
+                inputPath !== item.thumbnail.path
+                  ? ''
+                  : item.thumbnail.extension,
             },
           };
           setCharacter(edited);

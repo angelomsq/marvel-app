@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
 
   // Search and filter constants
   const [searchText, setSearchText] = useState('');
-  const [filtered, setFiltered] = useState<ICharacter[]>([]);
+  const [filtered, setFiltered] = useState<ICharacter[] | null>(null);
 
   // FETCH ALL CHARACTERS AND ADD TO LOCAL STORAGE
   useEffect(() => {
@@ -92,7 +92,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const endPageOffset = pageOffset + itemsPerPage;
 
-    if (filtered.length) {
+    if (filtered) {
       setCharacters(filtered.slice(pageOffset, endPageOffset));
     } else {
       const storagedCharacters = getStoragedCharacters();
@@ -104,22 +104,22 @@ const Dashboard: React.FC = () => {
   }, [pageOffset, itemsPerPage, total, filtered]);
 
   // HANDLE PAGE CHANGES
-  const handlePaginateClick = ({ selected }: any): void => {
+  const handlePaginateClick = (selected: number): void => {
     setPageNumber(selected);
     const newOffset = (selected * itemsPerPage) % total;
     setPageOffset(newOffset);
   };
 
-  const handleSearch = (event: any): void => {
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    if (searchText === '' && !filtered.length) return;
+    if (searchText === '' && !filtered) return;
 
     const storagedCharacters = getStoragedCharacters();
     if (storagedCharacters.length === 0) return;
 
-    if (searchText === '' && filtered.length) {
+    if (searchText === '') {
       setPageOffset(0);
-      setFiltered([]);
+      setFiltered(null);
       setTotal(storagedCharacters.length);
       setPageNumber(0);
     } else {
@@ -139,7 +139,7 @@ const Dashboard: React.FC = () => {
     if (storagedCharacters.length === 0) return;
 
     setPageOffset(0);
-    setFiltered([]);
+    setFiltered(null);
     setTotal(storagedCharacters.length);
     setPageNumber(0);
     setSearchText('');
@@ -163,7 +163,7 @@ const Dashboard: React.FC = () => {
           </Search>
         </header>
 
-        {!!filtered.length && (
+        {!!filtered && (
           <nav>
             <span>Search by: {searchText}</span>{' '}
             <button type="button" onClick={handleResetSearch}>
@@ -200,7 +200,7 @@ const Dashboard: React.FC = () => {
               <ReactPaginate
                 breakLabel="..."
                 nextLabel=">"
-                onPageChange={handlePaginateClick}
+                onPageChange={e => handlePaginateClick(e.selected)}
                 pageRangeDisplayed={1}
                 pageCount={pageCount}
                 forcePage={pageNumber}
